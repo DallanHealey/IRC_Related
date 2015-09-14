@@ -1,1 +1,8 @@
-finish userlist
+make server gui
+
+make server give local and global ip
+
+make client bold text go away after 30 seconds of being focused back
+
+Make it where images can be sent over network
+Add hyperlink support
