@@ -17,6 +17,7 @@ import java.util.Timer;
 import javax.imageio.ImageIO;
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.UnsupportedAudioFileException;
+import javax.swing.JEditorPane;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -76,11 +77,12 @@ public class Client
 		JPanel noWrapPanel = new JPanel(new BorderLayout());
 		noWrapPanel.setPreferredSize(new Dimension(175, 200));
 		messages = new JTextPane();
-		messages.setContentType("html/text");
+		messages.setEditorKit(JEditorPane.createEditorKitForContentType("text/html"));
 		doc = messages.getStyledDocument();
 		style = messages.addStyle("style1", null);
 		noWrapPanel.add(messages);
 		messages.setEditable(false);
+		messages.setFocusable(false);
 		// messages.setLineWrap(true);
 		// messages.setWrapStyleWord(true);
 		JScrollPane scrollPane = new JScrollPane(noWrapPanel);
@@ -212,7 +214,7 @@ public class Client
 		usersConnected.setLineWrap(true);
 		usersConnected.setWrapStyleWord(true);
 		usersConnected.setBounds(300, 0, 100, 100);
-
+		usersConnected.setFocusable(false);
 		// Add components
 		frame.add(usersConnected, BorderLayout.EAST);
 		frame.add(scrollPane, BorderLayout.CENTER);
@@ -240,6 +242,7 @@ public class Client
 
 		// Needs to be last
 		frame.setVisible(true);
+		message.grabFocus();
 
 		try
 
@@ -278,6 +281,10 @@ public class Client
 					usersConnected.setText("");
 					usersConnected.setText(messageText);
 
+				} else if (messageText.contains("!link"))
+				{
+					command = messageText.split(" ");
+					messages.getDocument().insertString(messages.getDocument().getLength(), "<a href='http://www.google.com/'>Test</a>", style);
 				} else
 				{
 					if (!frame.isFocused())
@@ -335,7 +342,7 @@ public class Client
 
 	private static String getIp()
 	{
-		String ip = JOptionPane.showInputDialog(frame, "Please enter IP", "192.168.1.127");
+		String ip = JOptionPane.showInputDialog(frame, "Please enter IP", "192.168.1.241");
 		if (ip == null || ip.isEmpty())
 			System.exit(0);
 		System.out.println(ip);

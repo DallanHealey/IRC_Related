@@ -40,9 +40,15 @@ public class ServerThread implements Runnable
 			while (Server.isRunning)
 			{
 				message = in.readLine();
-				System.out.println(message);
-				sendToAll(message);
 
+				if (message.equals(""))
+				{
+
+				} else
+				{
+					System.out.println(message);
+					sendToAll(message);
+				}
 			}
 
 		} catch (Exception e)
@@ -56,12 +62,13 @@ public class ServerThread implements Runnable
 				System.out.println(userName + " has disconnected");
 				Server.clientsConnected--;
 				Server.userList.remove(Server.userList.indexOf(userName.toString()));
+				Server.outputStreams.remove(out);
 				if (Server.clientsConnected != 0)
 				{
 					sendToAll("Connected Users: " + Server.userList.toString());
 					sendToAll(userName + " has disconnected");
 				}
-				Server.outputStreams.remove(out);
+
 				in.close();
 				out.close();
 				socket.close();
