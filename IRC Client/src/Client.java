@@ -1,6 +1,7 @@
 import java.applet.Applet;
 import java.applet.AudioClip;
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
@@ -45,7 +46,8 @@ public class Client
 	static int timerSpeed = 15000;
 	static boolean timerDone = true;
 
-	protected static Style style;
+	protected static Style defaultStyle;
+	protected static Style linkStyle;
 	protected static JTextPane messages;
 	protected static StyledDocument doc;
 
@@ -79,7 +81,10 @@ public class Client
 		messages = new JTextPane();
 		messages.setEditorKit(JEditorPane.createEditorKitForContentType("text/html"));
 		doc = messages.getStyledDocument();
-		style = messages.addStyle("style1", null);
+		defaultStyle = messages.addStyle("default", null);
+		linkStyle = messages.addStyle("link", defaultStyle);
+		StyleConstants.setForeground(linkStyle, Color.BLUE);
+		StyleConstants.setUnderline(linkStyle, true);
 		noWrapPanel.add(messages);
 		messages.setEditable(false);
 		messages.setFocusable(false);
@@ -89,7 +94,7 @@ public class Client
 		scrollPane.setViewportView(messages);
 		JScrollBar vBar = scrollPane.getVerticalScrollBar();
 		vBar.setValue(vBar.getMaximum());
-
+		messages.addMouseListener(new LinkListener());
 		JTextField message = new JTextField();
 		message.setToolTipText("Type message to send to other users. Press enter to send");
 		message.addKeyListener(new KeyListener()
@@ -110,7 +115,7 @@ public class Client
 			@Override
 			public void keyPressed(KeyEvent e)
 			{
-				StyleConstants.setBold(style, true);
+				StyleConstants.setBold(defaultStyle, true);
 
 				if (e.getKeyCode() == KeyEvent.VK_DOWN)
 				{
@@ -131,15 +136,18 @@ public class Client
 					if (message.getText().isEmpty() || message.getText() == null)
 					{
 
-					} else if (message.getText().contains("!clear"))
+					}
+					else if (message.getText().contains("!clear"))
 					{
 						messages.setText("");
 						message.setText("");
 
-					} else if (message.getText().equals("!quit"))
+					}
+					else if (message.getText().equals("!quit"))
 					{
 						System.exit(0);
-					} else if (message.getText().contains("!sound"))
+					}
+					else if (message.getText().contains("!sound"))
 					{
 						command = message.getText().split(" ");
 						if (command[1].equals("on"))
@@ -147,57 +155,66 @@ public class Client
 							soundOn = true;
 							try
 							{
-								messages.getDocument().insertString(messages.getDocument().getLength(), "Sound is now on\n", style);
-							} catch (BadLocationException e1)
+								messages.getDocument().insertString(messages.getDocument().getLength(), "Sound is now on\n", defaultStyle);
+							}
+							catch (BadLocationException e1)
 							{
 								e1.printStackTrace();
 							}
-						} else if (command[1].equals("off"))
+						}
+						else if (command[1].equals("off"))
 						{
 							soundOn = false;
 							try
 							{
-								messages.getDocument().insertString(messages.getDocument().getLength(), "Sound is now off\n", style);
-							} catch (BadLocationException e1)
+								messages.getDocument().insertString(messages.getDocument().getLength(), "Sound is now off\n", defaultStyle);
+							}
+							catch (BadLocationException e1)
 							{
 								e1.printStackTrace();
 							}
-						} else
+						}
+						else
 						{
 							try
 							{
-								messages.getDocument().insertString(messages.getDocument().getLength(), "Error with command. Try '!sound on' or '!sound off'\n", style);
-							} catch (BadLocationException e1)
+								messages.getDocument().insertString(messages.getDocument().getLength(), "Error with command. Try '!sound on' or '!sound off'\n", defaultStyle);
+							}
+							catch (BadLocationException e1)
 							{
 								e1.printStackTrace();
 							}
 						}
 						prevMessage = message.getText();
 						message.setText("");
-					} else if (message.getText().contains("!timer"))
+					}
+					else if (message.getText().contains("!timer"))
 					{
 						command = message.getText().split(" ");
 						try
 						{
 							timerSpeed = Integer.parseInt(command[1]) * 1000;
-							messages.getDocument().insertString(messages.getDocument().getLength(), "Timer has been changed to " + timerSpeed / 1000 + " seconds\n", style);
+							messages.getDocument().insertString(messages.getDocument().getLength(), "Timer has been changed to " + timerSpeed / 1000 + " seconds\n", defaultStyle);
 							message.setText("");
 
-						} catch (Exception e1)
+						}
+						catch (Exception e1)
 						{
 
 							System.out.println("Error. Please enter an int");
 							try
 							{
-								messages.getDocument().insertString(messages.getDocument().getLength(), "Error chaning timer. Please enter an intto change time to", style);
-							} catch (BadLocationException e2)
+								messages.getDocument().insertString(messages.getDocument().getLength(), "Error chaning timer. Please enter an intto change time to", defaultStyle);
+							}
+							catch (BadLocationException e2)
 							{
 								e2.printStackTrace();
 							}
 							e1.printStackTrace();
 							message.setText("");
 						}
-					} else
+					}
+					else
 					{
 						out.println(name + ": " + message.getText());
 						message.setText("");
@@ -229,7 +246,8 @@ public class Client
 					frame.setIconImage(ImageIO.read(Client.class.getResource("/icon.png")));
 					focusTimer.schedule(new FocusTimer(), focusSpeed);
 
-				} catch (IOException e1)
+				}
+				catch (IOException e1)
 				{
 					e1.printStackTrace();
 				}
@@ -263,7 +281,7 @@ public class Client
 
 				if (!frame.isFocused())
 				{
-					StyleConstants.setBold(style, true);
+					StyleConstants.setBold(defaultStyle, true);
 
 					if (soundOn && timerDone)
 					{
@@ -281,24 +299,27 @@ public class Client
 					usersConnected.setText("");
 					usersConnected.setText(messageText);
 
-				} else if (messageText.contains("!link"))
+				}
+				else if (messageText.contains("!link"))
 				{
 					command = messageText.split(" ");
-					messages.getDocument().insertString(messages.getDocument().getLength(), "<a href='http://www.google.com/'>Test</a>", style);
-				} else
+					messages.getDocument().insertString(messages.getDocument().getLength(), command[2], linkStyle);
+				}
+				else
 				{
 					if (!frame.isFocused())
 					{
-						StyleConstants.setBold(style, true);
+						StyleConstants.setBold(defaultStyle, true);
 
-						messages.getDocument().insertString(messages.getDocument().getLength(), messageText + "\n", style);
+						messages.getDocument().insertString(messages.getDocument().getLength(), messageText + "\n", defaultStyle);
 						vBar.setValue(vBar.getMaximum() + 1);
 						messages.setCaretPosition(messages.getDocument().getLength());
-					} else
+					}
+					else
 					{
-						StyleConstants.setBold(style, false);
+						StyleConstants.setBold(defaultStyle, false);
 
-						messages.getDocument().insertString(messages.getDocument().getLength(), messageText + "\n", style);
+						messages.getDocument().insertString(messages.getDocument().getLength(), messageText + "\n", defaultStyle);
 						vBar.setValue(vBar.getMaximum() + 1);
 						messages.setCaretPosition(messages.getDocument().getLength());
 
@@ -306,19 +327,22 @@ public class Client
 				}
 			}
 
-		} catch (
+		}
+		catch (
 
 		UnknownHostException e)
 
 		{
 			e.printStackTrace();
-		} catch (
+		}
+		catch (
 
 		IOException e)
 
 		{
 			e.printStackTrace();
-		} finally
+		}
+		finally
 
 		{
 			in.close();
@@ -342,7 +366,7 @@ public class Client
 
 	private static String getIp()
 	{
-		String ip = JOptionPane.showInputDialog(frame, "Please enter IP", "192.168.1.241");
+		String ip = JOptionPane.showInputDialog(frame, "Please enter IP", "localhost");
 		if (ip == null || ip.isEmpty())
 			System.exit(0);
 		System.out.println(ip);

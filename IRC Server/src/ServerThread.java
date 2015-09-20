@@ -44,18 +44,21 @@ public class ServerThread implements Runnable
 				if (message.equals(""))
 				{
 
-				} else
+				}
+				else
 				{
 					System.out.println(message);
 					sendToAll(message);
 				}
 			}
 
-		} catch (Exception e)
+		}
+		catch (Exception e)
 		{
 			System.out.println("An error occured");
 			e.printStackTrace();
-		} finally
+		}
+		finally
 		{
 			try
 			{
@@ -65,14 +68,15 @@ public class ServerThread implements Runnable
 				Server.outputStreams.remove(out);
 				if (Server.clientsConnected != 0)
 				{
-					sendToAll("Connected Users: " + Server.userList.toString());
 					sendToAll(userName + " has disconnected");
+					sendToAll("Connected Users: " + Server.userList.toString());
 				}
 
 				in.close();
 				out.close();
 				socket.close();
-			} catch (Exception e)
+			}
+			catch (Exception e)
 			{
 				System.out.println("Everything didnt close right");
 				e.printStackTrace();
