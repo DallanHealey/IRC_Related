@@ -5,4 +5,5 @@ make server give local and global ip
 make client bold text go away after 30 seconds of being focused back
 
 Make it where images can be sent over network
-Add hyperlink support
+
+Make hyperlink support work no matter where you click on the line. (Now only works if you click on the top (0,0) of the line)

@@ -1,30 +1,31 @@
 import java.awt.Desktop;
-import java.awt.Point;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.net.URI;
-import java.util.Hashtable;
 
-import javax.swing.text.Element;
+import javax.swing.text.Position;
 
 public class LinkListener extends MouseAdapter
 {
-	static Hashtable<URI, Point> links = new Hashtable<URI, Point>();
+	Position pos;
 
 	@Override
 	public void mouseClicked(MouseEvent e)
 	{
-		System.out.println("Test");
 		try
 		{
-
-			Element link = Client.doc.getCharacterElement(Client.messages.viewToModel(e.getPoint()));
-			URI urlLink = new URI(Client.command[2]);
-			links.put(urlLink, e.getPoint());
-
-			if (Desktop.isDesktopSupported() && links.get(e.getPoint()) == e.getPoint())
+			if (Desktop.isDesktopSupported())
 			{
-				Desktop.getDesktop().browse(urlLink);
+				System.out.println("Mouse coords: " + e.getPoint().getY());
+				System.out.println("URL coords: " + Client.links.get(Client.messages.getCaretPosition()));
+
+				if ((Client.links.get(Client.messages.getCaretPosition()) != null) || Client.links.get(Client.messages.getCaretPosition()) != null)
+				{
+					Desktop.getDesktop().browse(Client.links.get(Client.messages.getCaretPosition()));
+				}
+				else
+				{
+					System.out.println("No link at that location");
+				}
 			}
 			else
 			{
@@ -32,7 +33,10 @@ public class LinkListener extends MouseAdapter
 			}
 
 		}
-		catch (Exception ex)
+		catch (
+
+		Exception ex)
+
 		{
 			ex.printStackTrace();
 		}

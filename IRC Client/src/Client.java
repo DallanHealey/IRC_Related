@@ -12,7 +12,10 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintStream;
 import java.net.Socket;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.UnknownHostException;
+import java.util.Hashtable;
 import java.util.Timer;
 
 import javax.imageio.ImageIO;
@@ -60,7 +63,9 @@ public class Client
 	static String messageText;
 	static Socket socket;
 
-	public static void main(String[] args) throws IOException, LineUnavailableException, UnsupportedAudioFileException, BadLocationException
+	protected static Hashtable<Integer, URI> links = new Hashtable<Integer, URI>();
+
+	public static void main(String[] args) throws IOException, LineUnavailableException, UnsupportedAudioFileException, BadLocationException, URISyntaxException
 	{
 		AudioClip clip = Applet.newAudioClip(Client.class.getResource("/navi.wav"));
 		frame = new JFrame();
@@ -303,7 +308,11 @@ public class Client
 				else if (messageText.contains("!link"))
 				{
 					command = messageText.split(" ");
-					messages.getDocument().insertString(messages.getDocument().getLength(), command[2], linkStyle);
+					URI uri = new URI(command[2]);
+					messages.getDocument().insertString(messages.getDocument().getLength(), command[0] + " ", defaultStyle);
+					messages.getDocument().insertString(messages.getDocument().getLength(), uri + "\n", linkStyle);
+					System.out.println(messages.getCaretPosition());
+					links.put(messages.getCaretPosition(), uri);
 				}
 				else
 				{
