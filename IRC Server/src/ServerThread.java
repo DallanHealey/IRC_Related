@@ -54,6 +54,12 @@ public class ServerThread implements Runnable
 					sendToAll(message);
 					insertClientMessage(message);
 				}
+
+				if (Server.vBar.getValue() != Server.vBar.getMaximum())
+				{
+					Server.vBar.setValue(Server.vBar.getMaximum() + 1);
+					Server.messages.setCaretPosition(Server.messages.getDocument().getLength());
+				}
 			}
 
 		} catch (Exception e)
