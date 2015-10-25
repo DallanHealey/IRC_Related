@@ -5,6 +5,8 @@ import java.io.PrintStream;
 import java.net.Socket;
 import java.util.Enumeration;
 
+import javax.swing.text.BadLocationException;
+
 public class ServerThread implements Runnable
 {
 	private Socket socket;
@@ -29,12 +31,14 @@ public class ServerThread implements Runnable
 			// Get user name
 			userName = in.readLine();
 			System.out.println(userName.toString() + " has connected");
+			insertClientMessage(userName.toString() + " has connected");
 
 			sendToAll(userName.toString() + " has connected");
 			Server.userList.add(userName.toString());
 			System.out.println(Server.userList.toString());
 
 			System.out.println("Connected Users: " + Server.userList.toString());
+			insertClientMessage("Connected Users: " + Server.userList.toString());
 			sendToAll("Connected Users: " + Server.userList.toString());
 			System.out.println("Num users: " + Server.clientsConnected);
 			while (Server.isRunning)
@@ -44,21 +48,26 @@ public class ServerThread implements Runnable
 				if (message.equals(""))
 				{
 
-				}
-				else
+				} else
 				{
 					System.out.println(message);
 					sendToAll(message);
+					insertClientMessage(message);
 				}
 			}
 
-		}
-		catch (Exception e)
+		} catch (Exception e)
 		{
-			System.out.println("An error occured");
+			System.out.println("An error occured or a user has disconnected");
+			try
+			{
+				insertClientMessage("An error occured or a user has disconnected");
+			} catch (BadLocationException e1)
+			{
+				e1.printStackTrace();
+			}
 			e.printStackTrace();
-		}
-		finally
+		} finally
 		{
 			try
 			{
@@ -70,15 +79,23 @@ public class ServerThread implements Runnable
 				{
 					sendToAll(userName + " has disconnected");
 					sendToAll("Connected Users: " + Server.userList.toString());
+					insertClientMessage(userName + " has disconnected");
+					insertClientMessage("Connected Users: " + Server.userList.toString());
 				}
 
 				in.close();
 				out.close();
 				socket.close();
-			}
-			catch (Exception e)
+			} catch (Exception e)
 			{
-				System.out.println("Everything didnt close right");
+				System.out.println("Everything didn't close right");
+				try
+				{
+					insertClientMessage("Everything didn't close right");
+				} catch (BadLocationException e1)
+				{
+					e1.printStackTrace();
+				}
 				e.printStackTrace();
 			}
 		}
@@ -88,9 +105,16 @@ public class ServerThread implements Runnable
 	{
 		for (Enumeration<OutputStream> e = Server.outputStreams.elements(); e.hasMoreElements();)
 		{
+			if (Server.userList.isEmpty())
+				break;
 			out = (PrintStream) e.nextElement();
 			out.println(message);
 		}
+	}
+
+	protected void insertClientMessage(String message) throws BadLocationException
+	{
+		Server.messages.getDocument().insertString(Server.messages.getDocument().getLength(), message + "\n", null);
 	}
 
 }
