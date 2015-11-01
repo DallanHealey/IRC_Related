@@ -1,11 +1,11 @@
 This is my Java IRC Client and Server.
 
 Commands:
-	!sound [on : off]
+	!sound [on : off] | default: off
 		- on: turns notification sound on
 		- off: turns notification sound off
 	
-	!timer [seconds]
+	!timer [seconds] | default: 15
 		- seconds: seconds that you want notification timer to take before beeping 
 			       again when a new message comes in
 	
@@ -24,7 +24,7 @@ Pressing down arrow clears the chat.
 
 TODO:
 
-	make server give local and possibly global ip
+	make server give global ip
 
 	Make it where images can be sent over network
 
