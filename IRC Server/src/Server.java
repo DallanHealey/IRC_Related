@@ -2,6 +2,7 @@ import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
@@ -23,6 +24,7 @@ public class Server
 
 	public static JTextPane messages;
 	public static JScrollBar vBar;
+	private static String ipAddress;
 
 	public static int clientsConnected = 0;
 
@@ -32,8 +34,15 @@ public class Server
 
 	public static void main(String[] args) throws IOException, BadLocationException
 	{
-		JFrame window = new JFrame("IRC Server");
-		window.setSize(400, 400);
+		try
+		{
+			ipAddress = " - Local IP: " + InetAddress.getLocalHost().getHostAddress();
+		} catch (Exception e)
+		{
+			System.out.println("No Local IP Address");
+		}
+		JFrame window = new JFrame("IRC Server" + ipAddress);
+		window.setSize(450, 400);
 		window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		messages = new JTextPane();
 		messages.setEditable(false);
