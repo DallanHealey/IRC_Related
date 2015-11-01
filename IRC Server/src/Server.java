@@ -47,7 +47,7 @@ public class Server
 		vBar = scrollPane.getVerticalScrollBar();
 		vBar.setValue(vBar.getMaximum());
 
-		//window.add(messages);
+		// window.add(messages);
 		window.add(scrollPane);
 		window.setVisible(true);
 

@@ -14,7 +14,8 @@ public class IconTimer extends TimerTask
 			{
 				Client.frame.setIconImage(ImageIO.read(Client.class.getResource("/icon_yellow.png")));
 				Client.iconStatus = Client.ICON_YELLOW;
-			} else
+			}
+			else
 			{
 				Client.frame.setIconImage(ImageIO.read(Client.class.getResource("/icon.png")));
 				Client.iconStatus = Client.ICON_NORMAL;

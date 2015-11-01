@@ -48,7 +48,8 @@ public class ServerThread implements Runnable
 				if (message.equals(""))
 				{
 
-				} else
+				}
+				else
 				{
 					System.out.println(message);
 					sendToAll(message);

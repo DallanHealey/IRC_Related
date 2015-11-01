@@ -41,6 +41,9 @@ public class Client
 	final static int ICON_YELLOW = 1;
 	static int iconStatus = ICON_NORMAL;
 
+	static boolean isUnreadLine = false;
+	static int unreadLine;
+
 	static String name;
 	static String ip;
 	static JFrame frame;
@@ -61,7 +64,7 @@ public class Client
 	protected static StyledDocument doc;
 
 	static Timer focusTimer;
-	static int focusSpeed = 3000;
+	static int focusSpeed = 15000;
 	static boolean focusDone = false;
 
 	static BufferedReader in;
@@ -126,7 +129,7 @@ public class Client
 			@Override
 			public void keyPressed(KeyEvent e)
 			{
-				StyleConstants.setBold(defaultStyle, true);
+				// StyleConstants.setBold(defaultStyle, true);
 
 				if (e.getKeyCode() == KeyEvent.VK_DOWN)
 				{
@@ -147,16 +150,19 @@ public class Client
 					if (message.getText().isEmpty() || message.getText() == null)
 					{
 
-					} else if (message.getText().contains("!clear"))
+					}
+					else if (message.getText().contains("!clear"))
 					{
 						messages.setText("");
 						message.setText("");
 
-					} else if (message.getText().equals("!quit"))
+					}
+					else if (message.getText().equals("!quit"))
 					{
 
 						System.exit(0);
-					} else if (message.getText().contains("!sound"))
+					}
+					else if (message.getText().contains("!sound"))
 					{
 						command = message.getText().split(" ");
 						if (command[1].equals("on"))
@@ -169,7 +175,8 @@ public class Client
 							{
 								e1.printStackTrace();
 							}
-						} else if (command[1].equals("off"))
+						}
+						else if (command[1].equals("off"))
 						{
 							soundOn = false;
 							try
@@ -179,7 +186,8 @@ public class Client
 							{
 								e1.printStackTrace();
 							}
-						} else
+						}
+						else
 						{
 							try
 							{
@@ -191,7 +199,8 @@ public class Client
 						}
 						prevMessage = message.getText();
 						message.setText("");
-					} else if (message.getText().contains("!timer"))
+					}
+					else if (message.getText().contains("!timer"))
 					{
 						command = message.getText().split(" ");
 						try
@@ -214,7 +223,8 @@ public class Client
 							e1.printStackTrace();
 							message.setText("");
 						}
-					} else
+					}
+					else
 					{
 						out.println(name + ": " + message.getText());
 						message.setText("");
@@ -237,11 +247,13 @@ public class Client
 		frame.add(scrollPane, BorderLayout.CENTER);
 		frame.add(message, BorderLayout.SOUTH);
 		usersConnected.setAlignmentY(JFrame.CENTER_ALIGNMENT);
+
 		frame.addWindowFocusListener(new WindowAdapter()
 		{
 			public void windowGainedFocus(WindowEvent e)
 			{
 				iconTimer.cancel();
+				focusTimer = new Timer();
 				focusTimer.schedule(new FocusTimer(), focusSpeed);
 				try
 				{
@@ -251,12 +263,11 @@ public class Client
 				{
 					e1.printStackTrace();
 				}
+
 			}
 		});
 		boopTimer = new Timer();
 		boopTimer.schedule(new BoopTimer(), timerSpeed);
-
-		focusTimer = new Timer();
 
 		// Needs to be last
 		frame.setVisible(true);
@@ -281,7 +292,7 @@ public class Client
 
 				if (!frame.isFocused())
 				{
-					StyleConstants.setBold(defaultStyle, true);
+					// StyleConstants.setBold(defaultStyle, true);
 
 					if (soundOn && timerDone)
 					{
@@ -290,8 +301,7 @@ public class Client
 						boopTimer.schedule(new BoopTimer(), timerSpeed);
 					}
 					iconTimer = new Timer();
-					iconTimer.schedule(new IconTimer(), 0, 1000);
-					// frame.setIconImage(ImageIO.read(Client.class.getResource("/icon_yellow.png")));
+					iconTimer.schedule(new IconTimer(), 0, 2000);
 				}
 				messageText = in.readLine();
 				System.out.println(messageText);
@@ -301,7 +311,8 @@ public class Client
 					usersConnected.setText("");
 					usersConnected.setText(messageText);
 
-				} else if (messageText.contains("!link"))
+				}
+				else if (messageText.contains("!link"))
 				{
 					command = messageText.split(" ");
 					URI uri = new URI(command[2]);
@@ -309,19 +320,35 @@ public class Client
 					messages.getDocument().insertString(messages.getDocument().getLength(), uri + "\n", linkStyle);
 					System.out.println(messages.getCaretPosition());
 					links.put(messages.getCaretPosition(), uri);
-				} else
+				}
+				else
 				{
 					if (!frame.isFocused())
 					{
-						StyleConstants.setBold(defaultStyle, true);
+						// StyleConstants.setBold(defaultStyle, true);
+
+						if (!isUnreadLine)
+						{
+							unreadLine = messages.getDocument().getLength() - 1;
+
+							messages.getDocument().insertString(messages.getDocument().getLength(), "-------------------------\n", defaultStyle);
+
+							isUnreadLine = true;
+						}
 
 						messages.getDocument().insertString(messages.getDocument().getLength(), messageText + "\n", defaultStyle);
 						vBar.setValue(vBar.getMaximum() + 1);
 						messages.setCaretPosition(messages.getDocument().getLength());
-					} else
-					{
-						StyleConstants.setBold(defaultStyle, false);
 
+					}
+					else
+
+					{
+						// StyleConstants.setBold(defaultStyle, false);
+						if (isUnreadLine)
+						{
+							unreadLine += messageText.length();
+						}
 						messages.getDocument().insertString(messages.getDocument().getLength(), messageText + "\n", defaultStyle);
 						vBar.setValue(vBar.getMaximum() + 1);
 						messages.setCaretPosition(messages.getDocument().getLength());
