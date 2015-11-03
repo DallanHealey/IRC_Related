@@ -1,4 +1,4 @@
-This is my Java IRC Client and Server. Server has a gui and non-gui option.
+This is my Java IRC Client and Server.
 
 Commands:
 	!sound [on : off] | default: off
