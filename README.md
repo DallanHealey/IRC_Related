@@ -1,22 +1,22 @@
 This is my Java IRC Client and Server. Server has a gui and non-gui option.
 
 Commands:
-	!sound [on : off] | default: off
-		- on: turns notification sound on
-		- off: turns notification sound off
+!sound [on : off] | default: off
+	- on: turns notification sound on
+	- off: turns notification sound off
+
+!timer [seconds] | default: 15
+	- seconds: seconds that you want notification timer to take before beeping 
+		       again when a new message comes in
+
+!quit
+	- quits the appilcation
 	
-	!timer [seconds] | default: 15
-		- seconds: seconds that you want notification timer to take before beeping 
-			       again when a new message comes in
-	
-	!quit
-		- quits the appilcation
-		
-	!link [link]
-		- link: paste the link here (The only time you can click the link is if you click on (0, 0) of the line. Will be fixed soonish)
-	
-	!clear
-		- clears the chat
+!link [link]
+	- link: paste the link here (The only time you can click the link is if you click on (0, 0) of the line. Will be fixed soonish)
+
+!clear
+	- clears the chat
 		
 
 If you press the up arrow, it displays the last sent message.
@@ -29,3 +29,5 @@ TODO:
 	Make it where images can be sent over network
 
 	Make hyperlink support work no matter where you click on the line. (Now only works if you click on the top (0,0) of the line)
+
+	Get apk on website for download

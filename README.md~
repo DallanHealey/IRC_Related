@@ -1,4 +1,4 @@
-This is my Java IRC Client and Server.
+This is my Java IRC Client and Server. Server has a gui and non-gui option.
 
 Commands:
 	!sound [on : off] | default: off
@@ -29,3 +29,5 @@ TODO:
 	Make it where images can be sent over network
 
 	Make hyperlink support work no matter where you click on the line. (Now only works if you click on the top (0,0) of the line)
+
+	Get apk on website for download

@@ -1,7 +1,0 @@
-make server give global ip
-
-Make it where images can be sent over network
-
-Make hyperlink support work no matter where you click on the line. (Now only works if you click on the top (0,0) of the line)
-
-Make android notification work to where it takes you back to same activity
