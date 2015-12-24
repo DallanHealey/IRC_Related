@@ -48,10 +48,11 @@ public class Client
 	static String ip;
 	static JFrame frame;
 	static boolean isRunning = true;
-	static boolean soundOn = true;
+
 	static String[] command;
 	static String prevMessage;
-
+	
+	static boolean soundOn = true;
 	static Timer boopTimer;
 	static int timerSpeed = 15000;
 	static boolean timerDone = true;
@@ -92,20 +93,26 @@ public class Client
 		// Components and their properties
 		JPanel noWrapPanel = new JPanel(new BorderLayout());
 		noWrapPanel.setPreferredSize(new Dimension(175, 200));
+		
 		messages = new JTextPane();
 		messages.setEditorKit(JEditorPane.createEditorKitForContentType("text/html"));
 		doc = messages.getStyledDocument();
 		defaultStyle = messages.addStyle("default", null);
 		linkStyle = messages.addStyle("link", defaultStyle);
+		
 		StyleConstants.setForeground(linkStyle, Color.BLUE);
 		StyleConstants.setUnderline(linkStyle, true);
+		
 		noWrapPanel.add(messages);
+		
 		messages.setEditable(false);
 		messages.setFocusable(false);
 		// messages.setLineWrap(true);
 		// messages.setWrapStyleWord(true);
+		
 		JScrollPane scrollPane = new JScrollPane(noWrapPanel);
 		scrollPane.setViewportView(messages);
+		
 		JScrollBar vBar = scrollPane.getVerticalScrollBar();
 		vBar.setValue(vBar.getMaximum());
 		messages.addMouseListener(new LinkListener());
@@ -113,18 +120,13 @@ public class Client
 		message.setToolTipText("Type message to send to other users. Press enter to send");
 		message.addKeyListener(new KeyListener()
 		{
-
 			@Override
 			public void keyTyped(KeyEvent e)
-			{
-
-			}
+			{}
 
 			@Override
 			public void keyReleased(KeyEvent e)
-			{
-
-			}
+			{}
 
 			@Override
 			public void keyPressed(KeyEvent e)
@@ -134,13 +136,11 @@ public class Client
 				if (e.getKeyCode() == KeyEvent.VK_DOWN)
 				{
 					message.setText("");
-
 				}
 
 				if (e.getKeyCode() == KeyEvent.VK_UP)
 				{
 					message.setText(prevMessage);
-
 				}
 
 				if (e.getKeyCode() == KeyEvent.VK_ENTER)
@@ -148,18 +148,14 @@ public class Client
 					prevMessage = message.getText();
 
 					if (message.getText().isEmpty() || message.getText() == null)
-					{
-
-					}
+						return;
 					else if (message.getText().contains("!clear"))
 					{
 						messages.setText("");
 						message.setText("");
-
 					}
 					else if (message.getText().equals("!quit"))
 					{
-
 						System.exit(0);
 					}
 					else if (message.getText().contains("!sound"))
@@ -171,7 +167,8 @@ public class Client
 							try
 							{
 								messages.getDocument().insertString(messages.getDocument().getLength(), "Sound is now on\n", defaultStyle);
-							} catch (BadLocationException e1)
+							}
+							catch (BadLocationException e1)
 							{
 								e1.printStackTrace();
 							}
@@ -182,7 +179,8 @@ public class Client
 							try
 							{
 								messages.getDocument().insertString(messages.getDocument().getLength(), "Sound is now off\n", defaultStyle);
-							} catch (BadLocationException e1)
+							}
+							catch (BadLocationException e1)
 							{
 								e1.printStackTrace();
 							}
@@ -192,7 +190,8 @@ public class Client
 							try
 							{
 								messages.getDocument().insertString(messages.getDocument().getLength(), "Error with command. Try '!sound on' or '!sound off'\n", defaultStyle);
-							} catch (BadLocationException e1)
+							}
+							catch (BadLocationException e1)
 							{
 								e1.printStackTrace();
 							}
@@ -209,14 +208,16 @@ public class Client
 							messages.getDocument().insertString(messages.getDocument().getLength(), "Timer has been changed to " + timerSpeed / 1000 + " seconds\n", defaultStyle);
 							message.setText("");
 
-						} catch (Exception e1)
+						}
+						catch (Exception e1)
 						{
 
 							System.out.println("Error. Please enter an int");
 							try
 							{
 								messages.getDocument().insertString(messages.getDocument().getLength(), "Error chaning timer. Please enter an intto change time to", defaultStyle);
-							} catch (BadLocationException e2)
+							}
+							catch (BadLocationException e2)
 							{
 								e2.printStackTrace();
 							}
@@ -242,6 +243,7 @@ public class Client
 		usersConnected.setWrapStyleWord(true);
 		usersConnected.setBounds(300, 0, 100, 100);
 		usersConnected.setFocusable(false);
+		
 		// Add components
 		frame.add(usersConnected, BorderLayout.EAST);
 		frame.add(scrollPane, BorderLayout.CENTER);
@@ -259,7 +261,8 @@ public class Client
 				{
 					frame.setIconImage(ImageIO.read(Client.class.getResource("/icon.png")));
 					iconStatus = ICON_NORMAL;
-				} catch (IOException e1)
+				} 
+				catch (IOException e1)
 				{
 					e1.printStackTrace();
 				}
@@ -274,7 +277,6 @@ public class Client
 		message.grabFocus();
 
 		try
-
 		{
 			socket = new Socket(ip, 444);
 			in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
@@ -339,10 +341,8 @@ public class Client
 						messages.getDocument().insertString(messages.getDocument().getLength(), messageText + "\n", defaultStyle);
 						vBar.setValue(vBar.getMaximum() + 1);
 						messages.setCaretPosition(messages.getDocument().getLength());
-
 					}
 					else
-
 					{
 						// StyleConstants.setBold(defaultStyle, false);
 						if (isUnreadLine)
@@ -352,25 +352,20 @@ public class Client
 						messages.getDocument().insertString(messages.getDocument().getLength(), messageText + "\n", defaultStyle);
 						vBar.setValue(vBar.getMaximum() + 1);
 						messages.setCaretPosition(messages.getDocument().getLength());
-
 					}
 				}
 			}
-
-		} catch (
-
-		UnknownHostException e)
-
+		}
+		catch (UnknownHostException e)
 		{
 			e.printStackTrace();
-		} catch (
-
-		IOException e)
-
+		}
+		catch
+		(IOException e)
 		{
 			e.printStackTrace();
-		} finally
-
+		}
+		finally
 		{
 			in.close();
 			out.close();
@@ -378,7 +373,6 @@ public class Client
 			isRunning = false;
 			System.exit(0);
 		}
-
 	}
 
 	private static String getUsername(String message)

@@ -26,10 +26,8 @@ public class LinkListener extends MouseAdapter
 				System.out.println("Desktop Not Supported");
 			}
 
-		} catch (
-
-		Exception ex)
-
+		}
+		catch (Exception ex)
 		{
 			ex.printStackTrace();
 		}

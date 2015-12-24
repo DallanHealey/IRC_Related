@@ -5,6 +5,7 @@ import javax.imageio.ImageIO;
 
 public class IconTimer extends TimerTask
 {
+	
 	@Override
 	public void run()
 	{
@@ -20,12 +21,12 @@ public class IconTimer extends TimerTask
 				Client.frame.setIconImage(ImageIO.read(Client.class.getResource("/icon.png")));
 				Client.iconStatus = Client.ICON_NORMAL;
 			}
-		} catch (IOException e)
+		}
+		catch (IOException e)
 		{
 			e.printStackTrace();
 		}
 
 		Client.iconTimer.schedule(new IconTimer(), 2000);
 	}
-
 }

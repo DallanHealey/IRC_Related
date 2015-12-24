@@ -19,11 +19,11 @@ public class FocusTimer extends TimerTask
 				Client.unreadLine = 0;
 				// Client.focusDone = false;
 
-			} catch (BadLocationException e1)
+			}
+			catch (BadLocationException e1)
 			{
 				e1.printStackTrace();
 			}
 		}
 	}
-
 }
