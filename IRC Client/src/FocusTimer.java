@@ -10,7 +10,7 @@ public class FocusTimer extends TimerTask
 	{
 		// Client.focusDone = true;
 
-		if (Client.unreadLine != 0)
+		if (Client.isUnreadLine && Client.unreadLine != 0)
 		{
 			try
 			{

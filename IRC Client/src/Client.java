@@ -154,10 +154,8 @@ public class Client
 						messages.setText("");
 						message.setText("");
 					}
-					else if (message.getText().equals("!quit"))
-					{
+					else if (message.getText().equals("!quit") || message.getText().equals("!q"))
 						System.exit(0);
-					}
 					else if (message.getText().contains("!sound"))
 					{
 						command = message.getText().split(" ");
@@ -207,11 +205,9 @@ public class Client
 							timerSpeed = Integer.parseInt(command[1]) * 1000;
 							messages.getDocument().insertString(messages.getDocument().getLength(), "Timer has been changed to " + timerSpeed / 1000 + " seconds\n", defaultStyle);
 							message.setText("");
-
 						}
 						catch (Exception e1)
 						{
-
 							System.out.println("Error. Please enter an int");
 							try
 							{
@@ -266,7 +262,6 @@ public class Client
 				{
 					e1.printStackTrace();
 				}
-
 			}
 		});
 		boopTimer = new Timer();
@@ -285,7 +280,6 @@ public class Client
 
 			while (Client.isRunning)
 			{
-
 				if (vBar.getValue() != vBar.getMaximum())
 				{
 					vBar.setValue(vBar.getMaximum() + 1);
@@ -328,15 +322,15 @@ public class Client
 					if (!frame.isFocused())
 					{
 						// StyleConstants.setBold(defaultStyle, true);
-
+						
+						/*
 						if (!isUnreadLine)
 						{
 							unreadLine = messages.getDocument().getLength() - 1;
-
 							messages.getDocument().insertString(messages.getDocument().getLength(), "-------------------------\n", defaultStyle);
-
 							isUnreadLine = true;
 						}
+						*/
 
 						messages.getDocument().insertString(messages.getDocument().getLength(), messageText + "\n", defaultStyle);
 						vBar.setValue(vBar.getMaximum() + 1);
@@ -345,10 +339,10 @@ public class Client
 					else
 					{
 						// StyleConstants.setBold(defaultStyle, false);
+						/*
 						if (isUnreadLine)
-						{
-							unreadLine += messageText.length();
-						}
+							unreadLine += messageText.length() + 1;
+						*/
 						messages.getDocument().insertString(messages.getDocument().getLength(), messageText + "\n", defaultStyle);
 						vBar.setValue(vBar.getMaximum() + 1);
 						messages.setCaretPosition(messages.getDocument().getLength());
