@@ -23,9 +23,7 @@ public class IconTimer extends TimerTask
 			}
 		}
 		catch (IOException e)
-		{
-			e.printStackTrace();
-		}
+		{}
 
 		Client.iconTimer.schedule(new IconTimer(), 2000);
 	}

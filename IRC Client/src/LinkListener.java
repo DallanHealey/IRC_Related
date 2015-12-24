@@ -2,30 +2,22 @@ import java.awt.Desktop;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
-import javax.swing.text.Position;
-
 public class LinkListener extends MouseAdapter
 {
-	Position pos;
-
+	
 	@Override
 	public void mouseClicked(MouseEvent e)
 	{
+		System.out.println("Mouse coords: " + e.getX() + ", " + e.getY());
 		try
 		{
 			if (Desktop.isDesktopSupported())
 			{
-
-				if ((Client.links.get(Client.messages.getCaretPosition()) != null) || Client.links.get(Client.messages.getCaretPosition()) != null)
-				{
+				if ((Client.links.get(Client.messages.getCaretPosition()) != null) && (e.getY() >= Client.messages.getCaretPosition() && e.getY() <= Client.messages.getCaretPosition() + 21))
 					Desktop.getDesktop().browse(Client.links.get(Client.messages.getCaretPosition()));
-				}
 			}
 			else
-			{
 				System.out.println("Desktop Not Supported");
-			}
-
 		}
 		catch (Exception ex)
 		{

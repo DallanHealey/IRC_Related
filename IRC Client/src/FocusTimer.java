@@ -21,9 +21,7 @@ public class FocusTimer extends TimerTask
 
 			}
 			catch (BadLocationException e1)
-			{
-				e1.printStackTrace();
-			}
+			{}
 		}
 	}
 }

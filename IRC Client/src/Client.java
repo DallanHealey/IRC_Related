@@ -117,7 +117,7 @@ public class Client
 		vBar.setValue(vBar.getMaximum());
 		messages.addMouseListener(new LinkListener());
 		JTextField message = new JTextField();
-		message.setToolTipText("Type message to send to other users. Press enter to send");
+		message.setToolTipText("Type message to send to other users. Press enter to send.");
 		message.addKeyListener(new KeyListener()
 		{
 			@Override
@@ -250,7 +250,13 @@ public class Client
 		{
 			public void windowGainedFocus(WindowEvent e)
 			{
-				iconTimer.cancel();
+				try
+				{
+					iconTimer.cancel();
+				}
+				catch (Exception e1)
+				{}
+				
 				focusTimer = new Timer();
 				focusTimer.schedule(new FocusTimer(), focusSpeed);
 				try
@@ -259,9 +265,7 @@ public class Client
 					iconStatus = ICON_NORMAL;
 				} 
 				catch (IOException e1)
-				{
-					e1.printStackTrace();
-				}
+				{}
 			}
 		});
 		boopTimer = new Timer();
@@ -310,12 +314,13 @@ public class Client
 				}
 				else if (messageText.contains("!link"))
 				{
+					// Caret position increases by 21 from end of previous line to end of current line
 					command = messageText.split(" ");
 					URI uri = new URI(command[2]);
 					messages.getDocument().insertString(messages.getDocument().getLength(), command[0] + " ", defaultStyle);
 					messages.getDocument().insertString(messages.getDocument().getLength(), uri + "\n", linkStyle);
-					System.out.println(messages.getCaretPosition());
 					links.put(messages.getCaretPosition(), uri);
+					System.out.println("Link caret position: " + messages.getCaretPosition());
 				}
 				else
 				{
