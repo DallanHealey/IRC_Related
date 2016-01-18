@@ -39,7 +39,7 @@ import update.Update;
 
 public class Client
 {
-	final static String VERSION = "1.1";
+	final static String VERSION = "1.0";
 
 	final static int ICON_NORMAL = 0;
 	final static int ICON_YELLOW = 1;
@@ -89,7 +89,7 @@ public class Client
 		new Update("http://" + ip, VERSION, true, "IRC_Client.jar", "IRC_Client_New.jar");
 
 		name = getUsername("Please enter a username");
-		frame.setTitle("IRC Client - " + name + "1000");
+		frame.setTitle("IRC Client - " + name);
 		frame.setSize(500, 500);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
