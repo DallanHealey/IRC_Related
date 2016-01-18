@@ -35,8 +35,12 @@ import javax.swing.text.Style;
 import javax.swing.text.StyleConstants;
 import javax.swing.text.StyledDocument;
 
+import update.Update;
+
 public class Client
 {
+	final static String VERSION = "1.1";
+
 	final static int ICON_NORMAL = 0;
 	final static int ICON_YELLOW = 1;
 	static int iconStatus = ICON_NORMAL;
@@ -51,7 +55,7 @@ public class Client
 
 	static String[] command;
 	static String prevMessage;
-	
+
 	static boolean soundOn = true;
 	static Timer boopTimer;
 	static int timerSpeed = 15000;
@@ -75,14 +79,17 @@ public class Client
 
 	protected static Hashtable<Integer, URI> links = new Hashtable<Integer, URI>();
 
-	public static void main(String[] args) throws IOException, LineUnavailableException, UnsupportedAudioFileException, BadLocationException, URISyntaxException
+	public static void main(String[] args) throws IOException, LineUnavailableException, UnsupportedAudioFileException, BadLocationException, URISyntaxException, InterruptedException
 	{
 		AudioClip clip = Applet.newAudioClip(Client.class.getResource("/navi.wav"));
 		frame = new JFrame();
 		frame.setIconImage(ImageIO.read(Client.class.getResource("/icon.png")));
 		ip = getIp();
+
+		new Update("http://" + ip, VERSION, true, "IRC_Client.jar", "IRC_Client_New.jar");
+
 		name = getUsername("Please enter a username");
-		frame.setTitle("IRC Client - " + name);
+		frame.setTitle("IRC Client - " + name + "1000");
 		frame.setSize(500, 500);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
@@ -93,26 +100,26 @@ public class Client
 		// Components and their properties
 		JPanel noWrapPanel = new JPanel(new BorderLayout());
 		noWrapPanel.setPreferredSize(new Dimension(175, 200));
-		
+
 		messages = new JTextPane();
 		messages.setEditorKit(JEditorPane.createEditorKitForContentType("text/html"));
 		doc = messages.getStyledDocument();
 		defaultStyle = messages.addStyle("default", null);
 		linkStyle = messages.addStyle("link", defaultStyle);
-		
+
 		StyleConstants.setForeground(linkStyle, Color.BLUE);
 		StyleConstants.setUnderline(linkStyle, true);
-		
+
 		noWrapPanel.add(messages);
-		
+
 		messages.setEditable(false);
 		messages.setFocusable(false);
 		// messages.setLineWrap(true);
 		// messages.setWrapStyleWord(true);
-		
+
 		JScrollPane scrollPane = new JScrollPane(noWrapPanel);
 		scrollPane.setViewportView(messages);
-		
+
 		JScrollBar vBar = scrollPane.getVerticalScrollBar();
 		vBar.setValue(vBar.getMaximum());
 		messages.addMouseListener(new LinkListener());
@@ -122,11 +129,13 @@ public class Client
 		{
 			@Override
 			public void keyTyped(KeyEvent e)
-			{}
+			{
+			}
 
 			@Override
 			public void keyReleased(KeyEvent e)
-			{}
+			{
+			}
 
 			@Override
 			public void keyPressed(KeyEvent e)
@@ -239,7 +248,7 @@ public class Client
 		usersConnected.setWrapStyleWord(true);
 		usersConnected.setBounds(300, 0, 100, 100);
 		usersConnected.setFocusable(false);
-		
+
 		// Add components
 		frame.add(usersConnected, BorderLayout.EAST);
 		frame.add(scrollPane, BorderLayout.CENTER);
@@ -255,17 +264,19 @@ public class Client
 					iconTimer.cancel();
 				}
 				catch (Exception e1)
-				{}
-				
+				{
+				}
+
 				focusTimer = new Timer();
 				focusTimer.schedule(new FocusTimer(), focusSpeed);
 				try
 				{
 					frame.setIconImage(ImageIO.read(Client.class.getResource("/icon.png")));
 					iconStatus = ICON_NORMAL;
-				} 
+				}
 				catch (IOException e1)
-				{}
+				{
+				}
 			}
 		});
 		boopTimer = new Timer();
@@ -314,7 +325,8 @@ public class Client
 				}
 				else if (messageText.contains("!link"))
 				{
-					// Caret position increases by 21 from end of previous line to end of current line
+					// Caret position increases by 21 from end of previous line
+					// to end of current line
 					command = messageText.split(" ");
 					URI uri = new URI(command[2]);
 					messages.getDocument().insertString(messages.getDocument().getLength(), command[0] + " ", defaultStyle);
@@ -327,15 +339,15 @@ public class Client
 					if (!frame.isFocused())
 					{
 						// StyleConstants.setBold(defaultStyle, true);
-						
+
 						/*
-						if (!isUnreadLine)
-						{
-							unreadLine = messages.getDocument().getLength() - 1;
-							messages.getDocument().insertString(messages.getDocument().getLength(), "-------------------------\n", defaultStyle);
-							isUnreadLine = true;
-						}
-						*/
+						 * if (!isUnreadLine) { unreadLine =
+						 * messages.getDocument().getLength() - 1;
+						 * messages.getDocument().insertString(messages.
+						 * getDocument().getLength(),
+						 * "-------------------------\n", defaultStyle);
+						 * isUnreadLine = true; }
+						 */
 
 						messages.getDocument().insertString(messages.getDocument().getLength(), messageText + "\n", defaultStyle);
 						vBar.setValue(vBar.getMaximum() + 1);
@@ -345,9 +357,9 @@ public class Client
 					{
 						// StyleConstants.setBold(defaultStyle, false);
 						/*
-						if (isUnreadLine)
-							unreadLine += messageText.length() + 1;
-						*/
+						 * if (isUnreadLine) unreadLine += messageText.length()
+						 * + 1;
+						 */
 						messages.getDocument().insertString(messages.getDocument().getLength(), messageText + "\n", defaultStyle);
 						vBar.setValue(vBar.getMaximum() + 1);
 						messages.setCaretPosition(messages.getDocument().getLength());
@@ -359,8 +371,7 @@ public class Client
 		{
 			e.printStackTrace();
 		}
-		catch
-		(IOException e)
+		catch (IOException e)
 		{
 			e.printStackTrace();
 		}
