@@ -84,9 +84,17 @@ public class Client
 		AudioClip clip = Applet.newAudioClip(Client.class.getResource("/navi.wav"));
 		frame = new JFrame();
 		frame.setIconImage(ImageIO.read(Client.class.getResource("/icon.png")));
-		ip = getIp();
 
-		new Update("http://" + ip, VERSION, true, "IRC_Client.jar", "IRC_Client_New.jar");
+		ip = getIp();
+		
+		try
+		{
+			new Update("http://" + ip, VERSION, true, "IRC_Client.jar", "IRC_Client_New.jar");
+		} 
+		catch (Exception e)
+		{
+			// TODO: Add a message dialog
+		}
 
 		name = getUsername("Please enter a username");
 		frame.setTitle("IRC Client - " + name);
@@ -129,13 +137,11 @@ public class Client
 		{
 			@Override
 			public void keyTyped(KeyEvent e)
-			{
-			}
+			{}
 
 			@Override
 			public void keyReleased(KeyEvent e)
-			{
-			}
+			{}
 
 			@Override
 			public void keyPressed(KeyEvent e)
@@ -162,8 +168,7 @@ public class Client
 					{
 						messages.setText("");
 						message.setText("");
-					}
-					else if (message.getText().equals("!quit") || message.getText().equals("!q"))
+					} else if (message.getText().equals("!quit") || message.getText().equals("!q"))
 						System.exit(0);
 					else if (message.getText().contains("!sound"))
 					{
@@ -174,39 +179,33 @@ public class Client
 							try
 							{
 								messages.getDocument().insertString(messages.getDocument().getLength(), "Sound is now on\n", defaultStyle);
-							}
-							catch (BadLocationException e1)
+							} catch (BadLocationException e1)
 							{
 								e1.printStackTrace();
 							}
-						}
-						else if (command[1].equals("off"))
+						} else if (command[1].equals("off"))
 						{
 							soundOn = false;
 							try
 							{
 								messages.getDocument().insertString(messages.getDocument().getLength(), "Sound is now off\n", defaultStyle);
-							}
-							catch (BadLocationException e1)
+							} catch (BadLocationException e1)
 							{
 								e1.printStackTrace();
 							}
-						}
-						else
+						} else
 						{
 							try
 							{
 								messages.getDocument().insertString(messages.getDocument().getLength(), "Error with command. Try '!sound on' or '!sound off'\n", defaultStyle);
-							}
-							catch (BadLocationException e1)
+							} catch (BadLocationException e1)
 							{
 								e1.printStackTrace();
 							}
 						}
 						prevMessage = message.getText();
 						message.setText("");
-					}
-					else if (message.getText().contains("!timer"))
+					} else if (message.getText().contains("!timer"))
 					{
 						command = message.getText().split(" ");
 						try
@@ -214,23 +213,20 @@ public class Client
 							timerSpeed = Integer.parseInt(command[1]) * 1000;
 							messages.getDocument().insertString(messages.getDocument().getLength(), "Timer has been changed to " + timerSpeed / 1000 + " seconds\n", defaultStyle);
 							message.setText("");
-						}
-						catch (Exception e1)
+						} catch (Exception e1)
 						{
 							System.out.println("Error. Please enter an int");
 							try
 							{
 								messages.getDocument().insertString(messages.getDocument().getLength(), "Error chaning timer. Please enter an intto change time to", defaultStyle);
-							}
-							catch (BadLocationException e2)
+							} catch (BadLocationException e2)
 							{
 								e2.printStackTrace();
 							}
 							e1.printStackTrace();
 							message.setText("");
 						}
-					}
-					else
+					} else
 					{
 						out.println(name + ": " + message.getText());
 						message.setText("");
@@ -262,10 +258,8 @@ public class Client
 				try
 				{
 					iconTimer.cancel();
-				}
-				catch (Exception e1)
-				{
-				}
+				} catch (Exception e1)
+				{}
 
 				focusTimer = new Timer();
 				focusTimer.schedule(new FocusTimer(), focusSpeed);
@@ -273,22 +267,24 @@ public class Client
 				{
 					frame.setIconImage(ImageIO.read(Client.class.getResource("/icon.png")));
 					iconStatus = ICON_NORMAL;
-				}
-				catch (IOException e1)
-				{
-				}
+				} catch (IOException e1)
+				{}
 			}
 		});
 		boopTimer = new Timer();
 		boopTimer.schedule(new BoopTimer(), timerSpeed);
 
 		// Needs to be last
-		frame.setVisible(true);
-		message.grabFocus();
+		//frame.setVisible(true);
+		//message.grabFocus();
 
 		try
 		{
 			socket = new Socket(ip, 444);
+			
+			frame.setVisible(true);
+			message.grabFocus();
+			
 			in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 			out = new PrintStream(socket.getOutputStream(), true);
 			out.println(name);
@@ -322,8 +318,7 @@ public class Client
 					usersConnected.setText("");
 					usersConnected.setText(messageText);
 
-				}
-				else if (messageText.contains("!link"))
+				} else if (messageText.contains("!link"))
 				{
 					// Caret position increases by 21 from end of previous line
 					// to end of current line
@@ -333,8 +328,7 @@ public class Client
 					messages.getDocument().insertString(messages.getDocument().getLength(), uri + "\n", linkStyle);
 					links.put(messages.getCaretPosition(), uri);
 					System.out.println("Link caret position: " + messages.getCaretPosition());
-				}
-				else
+				} else
 				{
 					if (!frame.isFocused())
 					{
@@ -352,8 +346,7 @@ public class Client
 						messages.getDocument().insertString(messages.getDocument().getLength(), messageText + "\n", defaultStyle);
 						vBar.setValue(vBar.getMaximum() + 1);
 						messages.setCaretPosition(messages.getDocument().getLength());
-					}
-					else
+					} else
 					{
 						// StyleConstants.setBold(defaultStyle, false);
 						/*
@@ -366,14 +359,12 @@ public class Client
 					}
 				}
 			}
-		}
-		catch (UnknownHostException e)
+		} 
+		catch (Exception e)
 		{
-			e.printStackTrace();
-		}
-		catch (IOException e)
-		{
-			e.printStackTrace();
+			//Add something where it asks you to retry entering IP. If yes, reshow IP dialog and try again, else quit
+			int option = JOptionPane.showConfirmDialog(null, "Server is not running or your internet is not connected.", "Error", JOptionPane.OK_OPTION);
+			System.exit(0);
 		}
 		finally
 		{
