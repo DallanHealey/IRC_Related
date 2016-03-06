@@ -6,5 +6,6 @@
 	<classpathentry kind="lib" path="sounds"/>
 	<classpathentry kind="lib" path="icons"/>
 	<classpathentry kind="lib" path="libs/Updater.jar"/>
+	<classpathentry kind="lib" path="libs/commons-io-2.4.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

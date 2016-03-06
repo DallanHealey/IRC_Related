@@ -1,10 +1,14 @@
+package listeners;
+
 import java.awt.Desktop;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
+import client.Client;
+
 public class LinkListener extends MouseAdapter
 {
-	
+
 	@Override
 	public void mouseClicked(MouseEvent e)
 	{

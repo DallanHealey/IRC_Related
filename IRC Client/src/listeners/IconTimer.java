@@ -1,11 +1,15 @@
+package listeners;
+
 import java.io.IOException;
 import java.util.TimerTask;
 
 import javax.imageio.ImageIO;
 
+import client.Client;
+
 public class IconTimer extends TimerTask
 {
-	
+
 	@Override
 	public void run()
 	{
@@ -23,7 +27,8 @@ public class IconTimer extends TimerTask
 			}
 		}
 		catch (IOException e)
-		{}
+		{
+		}
 
 		Client.iconTimer.schedule(new IconTimer(), 2000);
 	}

@@ -1,6 +1,10 @@
+package listeners;
+
 import java.util.TimerTask;
 
 import javax.swing.text.BadLocationException;
+
+import client.Client;
 
 public class FocusTimer extends TimerTask
 {
@@ -21,7 +25,8 @@ public class FocusTimer extends TimerTask
 
 			}
 			catch (BadLocationException e1)
-			{}
+			{
+			}
 		}
 	}
 }

@@ -32,13 +32,13 @@ public class ServerThread implements Runnable
 			userName = in.readLine();
 			System.out.println(userName.toString() + " has connected");
 			insertClientMessage(userName.toString() + " has connected");
-
 			sendToAll(userName.toString() + " has connected");
 			Server.userList.add(userName.toString());
 			System.out.println(Server.userList.toString());
 
 			System.out.println("Connected Users: " + Server.userList.toString());
 			insertClientMessage("Connected Users: " + Server.userList.toString());
+
 			sendToAll("Connected Users: " + Server.userList.toString());
 			System.out.println("Num users: " + Server.clientsConnected);
 			while (Server.isRunning)
@@ -63,18 +63,21 @@ public class ServerThread implements Runnable
 				}
 			}
 
-		} catch (Exception e)
+		}
+		catch (Exception e)
 		{
 			System.out.println("An error occured or a user has disconnected");
 			try
 			{
 				insertClientMessage("An error occured or a user has disconnected");
-			} catch (BadLocationException e1)
+			}
+			catch (BadLocationException e1)
 			{
 				e1.printStackTrace();
 			}
 			e.printStackTrace();
-		} finally
+		}
+		finally
 		{
 			try
 			{
@@ -93,13 +96,15 @@ public class ServerThread implements Runnable
 				in.close();
 				out.close();
 				socket.close();
-			} catch (Exception e)
+			}
+			catch (Exception e)
 			{
 				System.out.println("Everything didn't close right");
 				try
 				{
 					insertClientMessage("Everything didn't close right");
-				} catch (BadLocationException e1)
+				}
+				catch (BadLocationException e1)
 				{
 					e1.printStackTrace();
 				}
