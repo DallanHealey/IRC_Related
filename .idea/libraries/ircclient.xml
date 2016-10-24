@@ -1,0 +1,10 @@
+<component name="libraryTable">
+  <library name="ircclient">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/Website/ircclient/Rename.jar!/" />
+      <root url="jar://$PROJECT_DIR$/Website/ircclient/IRC_Client.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

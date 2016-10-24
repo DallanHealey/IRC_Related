@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/IRC Client/IRC Client.iml" filepath="$PROJECT_DIR$/IRC Client/IRC Client.iml" />
+      <module fileurl="file://$PROJECT_DIR$/IRC Server/IRC Server.iml" filepath="$PROJECT_DIR$/IRC Server/IRC Server.iml" />
+      <module fileurl="file://$PROJECT_DIR$/IRC Server - Command Line/IRC Server - Command Line.iml" filepath="$PROJECT_DIR$/IRC Server - Command Line/IRC Server - Command Line.iml" />
+    </modules>
+  </component>
+</project>

@@ -1,0 +1,11 @@
+<component name="libraryTable">
+  <library name="IRC Client">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/Server.jar!/" />
+      <root url="jar://$PROJECT_DIR$/Server - Command Line.jar!/" />
+      <root url="jar://$PROJECT_DIR$/IRC_Client.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
