@@ -1,15 +1,15 @@
 package listeners;
 
-import java.util.TimerTask;
-
 import client.Client;
+
+import java.util.TimerTask;
 
 public class BoopTimer extends TimerTask
 {
 
-	@Override
-	public void run()
-	{
-		Client.timerDone = true;
-	}
+    @Override
+    public void run()
+    {
+        Client.timerDone = true;
+    }
 }
